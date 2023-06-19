@@ -33,7 +33,7 @@ public class StripeController : ControllerBase
 
     [Route("balancetransactions")]
     [HttpGet(Name = "balance_page")]
-    public ObjectResult GetBalancePaged(int pageNumber, int pageSize)
+    public ObjectResult GetBalanceTransactions(int pageNumber, int pageSize)
     {
         try
         {
