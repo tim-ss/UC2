@@ -1,4 +1,4 @@
-# Use Case 1
+# Use Case 2
 ## Description
 This API provides paging features for the Stripe test API.
 Features:
