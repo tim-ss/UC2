@@ -8,13 +8,11 @@ namespace UC2.Tests
     [TestClass]
     public class StripeControllerTest
     {
-        private Mock<IStripeService> mockStripeService;
+        private readonly Mock<IStripeService> mockStripeService = new();
 
         [TestInitialize]
         public void Setup()
         {
-            mockStripeService = new Mock<IStripeService>();
-
             var balance = new Balance
             {
                 Available = new List<BalanceAmount> {
@@ -28,16 +26,18 @@ namespace UC2.Tests
             };
             mockStripeService.Setup(p => p.GetBalance()).Returns(balance);
 
-            StripeList<BalanceTransaction> balanceTransactions = new StripeList<BalanceTransaction>();
-            balanceTransactions.Data =new List<BalanceTransaction>
+            StripeList<BalanceTransaction> balanceTransactions = new()
             {
-                new BalanceTransaction { Id = "tr1", Amount = 100, Currency = "tst" },
-                new BalanceTransaction { Id = "tr2", Amount = 200, Currency = "tst" },
-                new BalanceTransaction { Id = "tr3", Amount = 300, Currency = "tst" },
-                new BalanceTransaction { Id = "tr4", Amount = 400, Currency = "tst" },
-                new BalanceTransaction { Id = "tr5", Amount = 500, Currency = "tst" },
-                new BalanceTransaction { Id = "tr6", Amount = 600, Currency = "tst" },
-                new BalanceTransaction { Id = "tr7", Amount = 700, Currency = "tst" },
+                Data = new List<BalanceTransaction>
+                {
+                    new BalanceTransaction { Id = "tr1", Amount = 100, Currency = "tst" },
+                    new BalanceTransaction { Id = "tr2", Amount = 200, Currency = "tst" },
+                    new BalanceTransaction { Id = "tr3", Amount = 300, Currency = "tst" },
+                    new BalanceTransaction { Id = "tr4", Amount = 400, Currency = "tst" },
+                    new BalanceTransaction { Id = "tr5", Amount = 500, Currency = "tst" },
+                    new BalanceTransaction { Id = "tr6", Amount = 600, Currency = "tst" },
+                    new BalanceTransaction { Id = "tr7", Amount = 700, Currency = "tst" },
+                }
             };
             mockStripeService.Setup(p => p.GetBalanceTransactions()).Returns(balanceTransactions);
         }

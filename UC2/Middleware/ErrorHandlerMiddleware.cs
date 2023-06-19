@@ -26,7 +26,7 @@ public class ErrorHandlerMiddleware
 
             switch (error)
             {
-                case StripeException e:
+                case StripeException:
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
                 default:

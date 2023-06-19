@@ -4,8 +4,8 @@ namespace UC2.Services
 {
     public class StripeService : IStripeService
     {
-        private BalanceService balanceService;
-        private BalanceTransactionService balanceTransactionService;
+        private readonly BalanceService balanceService;
+        private readonly BalanceTransactionService balanceTransactionService;
 
         public StripeService()
         {
