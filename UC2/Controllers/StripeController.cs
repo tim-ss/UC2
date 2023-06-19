@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Stripe;
+using UC2.Services;
 
 namespace UC2.Controllers;
 
@@ -7,30 +7,45 @@ namespace UC2.Controllers;
 [Route("[controller]")]
 public class StripeController : ControllerBase
 {
-    private IConfiguration _configuration { get; }
+    private readonly IStripeService stripeService;
 
-    public StripeController(IConfiguration configuration)
+    public StripeController(IStripeService stripeService)
     {
-        _configuration = configuration;
-        StripeConfiguration.ApiKey = _configuration.GetValue<string>("ApiKeys:Stripe");
+        this.stripeService = stripeService;
     }
 
     [Route("balance")]
     [HttpGet(Name = "balance")]
-    public ObjectResult GetBalance()
+    public ObjectResult GetBalance(int pageNumber, int pageSize)
     {
-        var service = new BalanceService();
-        
         try
         {
-            var balance = service.Get();
-            return Ok(balance);
-
+            var balanceList = stripeService.GetBalance();
+            var skip = pageSize * (pageNumber - 1);
+            var pageData = balanceList.Available.Skip(skip).Take(pageSize);
+            return Ok(pageData);
         }
-        catch (Exception ex)
+        catch
         {
-            var error = new { ErrorMessage = ex.Message };
-            return Ok(error);
+            throw;
         }
     }
+
+    [Route("balancetransactions")]
+    [HttpGet(Name = "balance_page")]
+    public ObjectResult GetBalancePaged(int pageNumber, int pageSize)
+    {
+        try
+        {
+            var transactionsList = stripeService.GetBalanceTransactions();
+            var skip = pageSize * (pageNumber - 1);
+            var pageData = transactionsList.Skip(skip).Take(pageSize);
+            return Ok(pageData);
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
 }
